@@ -8,9 +8,19 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from loading2 import Ui_Form
 
 class Ui_MainWindow(object):
+    def open_loading_screen(self):
+        print("otwieram loading screen")
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Form()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+
+
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(642, 729)
@@ -185,19 +195,23 @@ class Ui_MainWindow(object):
         self.Button_wykres.setObjectName("Button_wykres")
         self.verticalLayout_3.addWidget(self.Button_wykres, 0, QtCore.Qt.AlignHCenter)
         self.verticalLayout.addWidget(self.widget_tabelki)
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setMinimumSize(QtCore.QSize(250, 30))
-        self.pushButton.setMaximumSize(QtCore.QSize(250, 30))
+        self.Button_loading = QtWidgets.QPushButton(self.centralwidget)
+        self.Button_loading.setMinimumSize(QtCore.QSize(250, 30))
+        self.Button_loading.setMaximumSize(QtCore.QSize(250, 30))
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
         font.setWeight(75)
-        self.pushButton.setFont(font)
-        self.pushButton.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.pushButton.setIconSize(QtCore.QSize(5, 5))
-        self.pushButton.setAutoRepeatInterval(0)
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton, 0, QtCore.Qt.AlignHCenter)
+        self.Button_loading.setFont(font)
+        self.Button_loading.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.Button_loading.setIconSize(QtCore.QSize(5, 5))
+        self.Button_loading.setAutoRepeatInterval(0)
+        self.Button_loading.setObjectName("Button_loading")
+
+        # connecting button when clicked to function open_loading_screen
+        self.Button_loading.clicked.connect(self.open_loading_screen)
+
+        self.verticalLayout.addWidget(self.Button_loading, 0, QtCore.Qt.AlignHCenter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 642, 21))
@@ -237,7 +251,10 @@ class Ui_MainWindow(object):
         item = self.tabelka.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "link"))
         self.Button_wykres.setText(_translate("MainWindow", "Wykres Danych"))
-        self.pushButton.setText(_translate("MainWindow", "Aktualizuj bazę danych"))
+
+        self.Button_loading.setText(_translate("MainWindow", "Aktualizuj bazę danych"))
+
+
         self.action123.setText(_translate("MainWindow", "123"))
         self.action123_2.setText(_translate("MainWindow", "123"))
 

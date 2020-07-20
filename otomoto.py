@@ -11,7 +11,7 @@ class Models():
     modele = []
 
 
-all = 0
+all_scraped = 0
 czas_pobierania_stron = 0
 class Car():
     cena = None
@@ -87,7 +87,7 @@ def data_implement(auction):
     return ret
 
 def take_auctions(page):
-    global counter,range_text,all
+    global counter,range_text,all_scraped
     # list of auctions
     list = []
     # First auction on actual page
@@ -161,7 +161,7 @@ def every_car_complex_sql(base_adress, db_file):
     start_price = 0
     price_range = 500
     for i in range(2000):
-        global counter, range_text, all, czas_pobierania_stron
+        global counter, range_text, all_scraped, czas_pobierania_stron
         counter = 0
         settings = "?search%5Bfilter_float_price%3Afrom%5D=" + str((start_price + price_range * i) + 1) + "&search%5Bfilter_float_price%3Ato%5D=" + str(start_price + price_range * (i + 1)) + "&search%5Bfilter_enum_damaged%5D=0&search%5Border%5D=created_at%3Adesc&search%5Bbrand_program_id%5D%5B0%5D=&search%5Bcountry%5D="
         range_text = "<" + str(
@@ -184,13 +184,13 @@ def every_car_complex_sql(base_adress, db_file):
             sql_cars(db_file, take_auctions(actualpage))
             nextpageURL = actualpage.find('li', class_="next abs")
 
-licznik_start_programu = time.time()
+#licznik_start_programu = time.time()
 
-start_adress = "https://www.otomoto.pl/osobowe/"
-every_car_complex_sql(start_adress, '18.07.2020.db')
+#start_adress = "https://www.otomoto.pl/osobowe/"
+#every_car_complex_sql(start_adress, '18.07.2020.db')
 
-licznik_koniec_programu = time.time()
-print(f" Czas działania całego programu: {licznik_koniec_programu-licznik_start_programu}")
-print(f"Czas pobierania aukcji {czas_pobierania_stron}")
-procentowo = (czas_pobierania_stron *100) / (licznik_koniec_programu-licznik_start_programu)
-print(f"Pobieranie aukcji to: {procentowo} %")
+#licznik_koniec_programu = time.time()
+#print(f" Czas działania całego programu: {licznik_koniec_programu-licznik_start_programu}")
+#print(f"Czas pobierania aukcji {czas_pobierania_stron}")
+#procentowo = (czas_pobierania_stron *100) / (licznik_koniec_programu-licznik_start_programu)
+#print(f"Pobieranie aukcji to: {procentowo} %")
