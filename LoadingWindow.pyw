@@ -16,6 +16,7 @@ from sqlite3 import Error
 import re
 import time
 import threading
+import sys
 
 
 
@@ -44,6 +45,8 @@ class Car():
 
 
 class Ui_Form(object):
+
+
     def entersite(self, adress):
         req = Request(adress, headers={
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -125,15 +128,20 @@ class Ui_Form(object):
         # Auctions to the end of acutal page
         all_auctions_in_range = page.find('span', class_="counter").text[1:-1]
 
+        # taking data from all auctions on actual page
         while auction != None:
             new = self.data_implement(auction)
             list.append(new)
             self.counter = self.counter + 1
             self.all_scraped = self.all_scraped + 1
             auction = auction.find_next('article')
-        print(f"Przedział: {self.range_text} | pobrano {self.counter} z {all_auctions_in_range} | łącznie pobrano: {self.all_scraped}")
-        self.listView.append(f"Przedział: {self.range_text} | w tym przedziale pobrano {self.counter} z {all_auctions_in_range} | łącznie pobrano: {self.all_scraped} z {self.all_cars}")
 
+        # status info
+        print(f"Przedział: {self.range_text} | pobrano {self.counter} z {all_auctions_in_range} | łącznie pobrano: {self.all_scraped}")
+        self.textBrowser.append(f"Przedział: {self.range_text} | w tym przedziale pobrano {self.counter} z {all_auctions_in_range} | łącznie pobrano: {self.all_scraped} z {self.all_cars}")
+
+
+        # providing info about time left of downlaoding data
         if (self.all_scraped != 0 and self.all_cars!=0):
             seconds_left = int(((1 - (self.all_scraped/self.all_cars))*self.czas_pobierania_stron)/(self.all_scraped/self.all_cars))
             hours_left = seconds_left//3600
@@ -141,10 +149,11 @@ class Ui_Form(object):
             minutes_left = seconds_left//60
             seconds_left = seconds_left % 60
             self.label_3.setText(f"{hours_left} h : {minutes_left} m : {seconds_left} s")
-        #thread1 = threading.Thread(target=self.every_car_complex_sql, args=(start_adress, "test.db"))
-        #thread1.start()
 
-        #print(int((self.all_scraped/self.all_cars)*100))
+        # setting scrollbar to the end of output
+        scrollbar = self.textBrowser.verticalScrollBar()
+        scrollbar.setValue(scrollbar.maximum())
+
 
         return list
 
@@ -232,23 +241,31 @@ class Ui_Form(object):
     def startscrapping(self):
         start_adress = "https://www.otomoto.pl/osobowe/"
         self.loading_info(start_adress)
-        # TO DZIALA!! ODPALANIE WATKIEM
-        thread1 = threading.Thread(target=self.every_car_complex_sql, args=(start_adress, "test.db"))
-        thread1.start()
+
+        save_path = QtWidgets.QFileDialog.getSaveFileName()
+        save_path = save_path[0]
+        print(save_path)
+
+        if (".db" != save_path[-3:]):
+            save_path = save_path + ".db"
+        if (save_path != ".db"):
+            self.thread1 = threading.Thread(target=self.every_car_complex_sql, args=(start_adress, str(save_path)))
+            self.thread1.daemon = True
+            self.thread1.start()
+
+
+
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(520, 560)
-        #self.progressBar = QtWidgets.QProgressBar(Form)
-
-        #self.progressBar.setGeometry(QtCore.QRect(20, 100, 481, 21))
-        #self.progressBar.setProperty("value", 0)
-        #self.progressBar.setObjectName("progressBar")
-        self.listView = QtWidgets.QTextBrowser(Form)
-        self.listView.setGeometry(QtCore.QRect(10, 140, 501, 361))
-        self.listView.setObjectName("listView")
+        Form.resize(623, 343)
+        Form.setMinimumSize(QtCore.QSize(623, 343))
+        Form.setMaximumSize(QtCore.QSize(623, 343))
+        self.textBrowser = QtWidgets.QTextBrowser(Form)
+        self.textBrowser.setGeometry(QtCore.QRect(9, 57, 601, 231))
+        self.textBrowser.setObjectName("textBrowser")
         self.verticalLayoutWidget = QtWidgets.QWidget(Form)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(20, 20, 471, 61))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(200, 10, 216, 42))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -262,39 +279,48 @@ class Ui_Form(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.label.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.label.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label, 0, QtCore.Qt.AlignRight)
+        self.horizontalLayout.addWidget(self.label)
         self.label_3 = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout.addWidget(self.label_3)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.pushButton = QtWidgets.QPushButton(Form)
-        self.pushButton.setGeometry(QtCore.QRect(204, 512, 101, 31))
+        self.pushButton.setGeometry(QtCore.QRect(263, 301, 96, 31))
+        self.pushButton.setMaximumSize(QtCore.QSize(216, 16777215))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
 
-        self.pushButton.clicked.connect(self.startscrapping)
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+
+        # ADDED
+        self.pushButton.clicked.connect(self.startscrapping)
+        print("SET UP")
+
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "Aktualizacja bazy danych"))
         self.label_2.setText(_translate("Form", "Pobieranie nowej bazy danych"))
-        self.label.setText(_translate("Form", "Pozostało około:"))
+        self.label.setText(_translate("Form", "Pozostało:"))
         self.label_3.setText(_translate("Form", ""))
         self.pushButton.setText(_translate("Form", "Rozpocznij"))
 
 
-if __name__ == "__main__":
-    import sys
 
+
+if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+
+

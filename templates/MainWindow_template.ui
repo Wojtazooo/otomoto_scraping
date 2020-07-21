@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>642</width>
-    <height>729</height>
+    <height>706</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -18,6 +18,46 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_database_text">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Załadowana baza danych:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lab_database_loadedi_info">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="toolButton">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <widget class="QWidget" name="widget_label_i_listy" native="true">
       <property name="maximumSize">
@@ -168,6 +208,12 @@
           </size>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <widget class="QComboBox" name="wybor_marka">
             <property name="minimumSize">
@@ -368,19 +414,19 @@
         <widget class="QPushButton" name="Button_wykres">
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>100</width>
            <height>30</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>350</width>
+           <width>100</width>
            <height>30</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>12</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -389,49 +435,49 @@
           <enum>Qt::LeftToRight</enum>
          </property>
          <property name="text">
-          <string>Wykres Danych</string>
+          <string>Wykres</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="Button_loading">
+         <property name="minimumSize">
+          <size>
+           <width>280</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>280</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Pobierz nową bazę danych</string>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>5</width>
+           <height>5</height>
+          </size>
+         </property>
+         <property name="autoRepeatInterval">
+          <number>0</number>
          </property>
         </widget>
        </item>
       </layout>
-     </widget>
-    </item>
-    <item alignment="Qt::AlignHCenter">
-     <widget class="QPushButton" name="pushButton">
-      <property name="minimumSize">
-       <size>
-        <width>250</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>250</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="text">
-       <string>Aktualizuj bazę danych</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>5</width>
-        <height>5</height>
-       </size>
-      </property>
-      <property name="autoRepeatInterval">
-       <number>0</number>
-      </property>
      </widget>
     </item>
    </layout>

@@ -1,14 +1,16 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'otomoto_z_tabelka.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.2
-#
-# WARNING! All changes made in this file will be lost!
-
-
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
+import sys
+import os
+import modele
+import random
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
-from loading2 import Ui_Form
+import PyQt5.Qt
+import webbrowser
+from PyQt5 import QtCore, QtGui, QtWidgets
+from LoadingWindow import Ui_Form
+import pathlib
 
 class Ui_MainWindow(object):
     def open_loading_screen(self):
@@ -18,17 +20,89 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.window)
         self.window.show()
 
+    def button1clicked(self):
+        print("klinknieto")
+        marka = self.wybor_marka.currentText()
+        model = self.wybor_model.currentText()
+        rok = self.wybor_rok_produkcji.currentText()
+        self.ustawienia_tabelki()
+        plt = modele.Wykresik(self.database, marka, model, rok)
+        plt.show()
 
+    def funkcja(self):
+        print("otwórz stronę")
+        wiersz = self.tabelka.currentRow()
+        kolumna = self.tabelka.currentColumn()
+        if (kolumna == 5):
+            # print(self.tabelka.item(wiersz,kolumna).text())
+            webbrowser.open(self.tabelka.item(wiersz, kolumna).text())
 
+    def ustawienia_tabelki(self):
+        print("USTAWIENIA TABELKI")
+        marka = self.wybor_marka.currentText()
+        model = self.wybor_model.currentText()
+        rok = self.wybor_rok_produkcji.currentText()
+        dane = modele.dane_lista(self.database, marka, model, rok)
+
+        self.tabelka.setRowCount(len(dane))
+
+        item = QtWidgets.QTableWidgetItem()
+        item.setData(PyQt5.QtCore.Qt.DisplayRole, 6)
+        print(type(item))
+
+        for d in range(len(dane)):
+            self.tabelka.setItem(d, 0, QtWidgets.QTableWidgetItem(dane[d][0]))
+            self.tabelka.setItem(d, 1, QtWidgets.QTableWidgetItem(dane[d][1]))
+            cena = QtWidgets.QTableWidgetItem()
+            cena.setData(PyQt5.QtCore.Qt.DisplayRole, dane[d][2])
+            self.tabelka.setItem(d, 2, cena)
+            self.tabelka.setItem(d, 3, QtWidgets.QTableWidgetItem(str(dane[d][3])))
+            self.tabelka.setItem(d, 4, QtWidgets.QTableWidgetItem(str(dane[d][4]) + " km"))
+            self.tabelka.setItem(d, 5, QtWidgets.QTableWidgetItem(str(dane[d][7])))
+        self.tabelka.cellDoubleClicked.connect(self.funkcja)
+        self.tabelka.setSortingEnabled(True)
+        # self.tabelka.cellDoubleClicked.connect(self.funkcja)
+
+    def update_model_list(self):
+        self.wybor_model.clear()
+        f = open("marki.txt", "r")
+        for i, line in enumerate(f):
+            if (i == self.wybor_marka.currentIndex()-1):
+                self.wybor_model.addItems(line.split(","))
+
+    def change_database(self):
+        print("123")
+        load_path = QtWidgets.QFileDialog.getOpenFileName()
+        load_path = load_path[0]
+        print(load_path)
+        self.database = str(load_path)
+        self.lab_database_loadedi_info.setText(self.database)
+        self.ustawienia_tabelki()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(642, 729)
+        MainWindow.resize(642, 706)
         MainWindow.setMouseTracking(True)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_database_text = QtWidgets.QLabel(self.centralwidget)
+        self.label_database_text.setMinimumSize(QtCore.QSize(140, 30))
+        self.label_database_text.setMaximumSize(QtCore.QSize(140, 30))
+        self.label_database_text.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label_database_text.setObjectName("label_database_text")
+        self.horizontalLayout_2.addWidget(self.label_database_text)
+        self.lab_database_loadedi_info = QtWidgets.QLabel(self.centralwidget)
+        self.lab_database_loadedi_info.setText("")
+        self.lab_database_loadedi_info.setObjectName("lab_database_loadedi_info")
+        self.horizontalLayout_2.addWidget(self.lab_database_loadedi_info)
+        self.toolButton = QtWidgets.QToolButton(self.centralwidget)
+        self.toolButton.setObjectName("toolButton")
+        self.horizontalLayout_2.addWidget(self.toolButton)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.widget_label_i_listy = QtWidgets.QWidget(self.centralwidget)
         self.widget_label_i_listy.setMaximumSize(QtCore.QSize(619, 210))
         self.widget_label_i_listy.setObjectName("widget_label_i_listy")
@@ -96,6 +170,7 @@ class Ui_MainWindow(object):
         self.widget_listy.setMaximumSize(QtCore.QSize(330, 16777215))
         self.widget_listy.setObjectName("widget_listy")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.widget_listy)
+        self.verticalLayout_4.setContentsMargins(-1, -1, 9, 0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.wybor_marka = QtWidgets.QComboBox(self.widget_listy)
         self.wybor_marka.setMinimumSize(QtCore.QSize(0, 30))
@@ -137,7 +212,6 @@ class Ui_MainWindow(object):
         self.wybor_rok_produkcji.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.wybor_rok_produkcji.setFrame(False)
         self.wybor_rok_produkcji.setObjectName("wybor_rok_produkcji")
-        self.wybor_rok_produkcji.addItem("")
         self.verticalLayout_4.addWidget(self.wybor_rok_produkcji)
         self.horizontalLayout.addWidget(self.widget_listy)
         self.verticalLayout.addWidget(self.widget_label_i_listy)
@@ -184,22 +258,21 @@ class Ui_MainWindow(object):
         self.tabelka.setHorizontalHeaderItem(5, item)
         self.verticalLayout_3.addWidget(self.tabelka)
         self.Button_wykres = QtWidgets.QPushButton(self.widget_tabelki)
-        self.Button_wykres.setMinimumSize(QtCore.QSize(0, 30))
-        self.Button_wykres.setMaximumSize(QtCore.QSize(350, 30))
+        self.Button_wykres.setMinimumSize(QtCore.QSize(100, 30))
+        self.Button_wykres.setMaximumSize(QtCore.QSize(100, 30))
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.Button_wykres.setFont(font)
         self.Button_wykres.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.Button_wykres.setObjectName("Button_wykres")
         self.verticalLayout_3.addWidget(self.Button_wykres, 0, QtCore.Qt.AlignHCenter)
-        self.verticalLayout.addWidget(self.widget_tabelki)
-        self.Button_loading = QtWidgets.QPushButton(self.centralwidget)
-        self.Button_loading.setMinimumSize(QtCore.QSize(250, 30))
-        self.Button_loading.setMaximumSize(QtCore.QSize(250, 30))
+        self.Button_loading = QtWidgets.QPushButton(self.widget_tabelki)
+        self.Button_loading.setMinimumSize(QtCore.QSize(280, 30))
+        self.Button_loading.setMaximumSize(QtCore.QSize(280, 30))
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(12)
         font.setBold(True)
         font.setWeight(75)
         self.Button_loading.setFont(font)
@@ -207,11 +280,8 @@ class Ui_MainWindow(object):
         self.Button_loading.setIconSize(QtCore.QSize(5, 5))
         self.Button_loading.setAutoRepeatInterval(0)
         self.Button_loading.setObjectName("Button_loading")
-
-        # connecting button when clicked to function open_loading_screen
-        self.Button_loading.clicked.connect(self.open_loading_screen)
-
-        self.verticalLayout.addWidget(self.Button_loading, 0, QtCore.Qt.AlignHCenter)
+        self.verticalLayout_3.addWidget(self.Button_loading, 0, QtCore.Qt.AlignHCenter)
+        self.verticalLayout.addWidget(self.widget_tabelki)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 642, 21))
@@ -228,15 +298,46 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+
+        # ADDED
+        # wczytanie marek pojazdów
+        file = open("marki.txt", "r")
+        f = open("marki.txt", "r")
+        for i in f.readlines():
+            self.wybor_marka.addItem(i.split(",")[0])
+
+        self.wybor_rok_produkcji.addItem("")
+        for i in range(40):
+            rok = 2020 - i
+            self.wybor_rok_produkcji.addItem(str(rok))
+
+        self.tabelka.setColumnCount(6)
+        self.tabelka.setRowCount(12)
+
+        self.Button_wykres.clicked.connect(self.button1clicked)
+        # self.wybor_marka.currentTextChanged(self.update_model_list)
+        self.wybor_marka.currentTextChanged.connect(self.update_model_list, self.wybor_marka.currentIndex())
+        self.wybor_model.currentTextChanged.connect(self.ustawienia_tabelki, self.wybor_model.currentIndex())
+        self.wybor_rok_produkcji.currentTextChanged.connect(self.ustawienia_tabelki,
+                                                            self.wybor_rok_produkcji.currentIndex())
+        # connecting button when clicked to function open_loading_screen
+        self.Button_loading.clicked.connect(self.open_loading_screen)
+
+
+        self.database = "example_database.db"
+        self.lab_database_loadedi_info.setText(self.database)
+
+        self.toolButton.clicked.connect(self.change_database)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label_database_text.setText(_translate("MainWindow", "Załadowana baza danych:"))
+        self.toolButton.setText(_translate("MainWindow", "Zmień"))
         self.lab_marka.setText(_translate("MainWindow", "Marka"))
         self.lab_model.setText(_translate("MainWindow", "Model"))
         self.label_rokpr.setText(_translate("MainWindow", "rok produkcji"))
-        self.wybor_marka.setItemText(0, _translate("MainWindow", "Opel"))
-        self.wybor_model.setItemText(0, _translate("MainWindow", "Corsa"))
-        self.wybor_rok_produkcji.setItemText(0, _translate("MainWindow", "2020"))
+
         self.label_Listaaukcji.setText(_translate("MainWindow", "Lista aukcji"))
         item = self.tabelka.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Marka"))
@@ -250,13 +351,14 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "przebieg"))
         item = self.tabelka.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "link"))
-        self.Button_wykres.setText(_translate("MainWindow", "Wykres Danych"))
+        self.Button_wykres.setText(_translate("MainWindow", "Wykres"))
+        self.Button_loading.setText(_translate("MainWindow", "Pobierz nową bazę danych"))
 
-        self.Button_loading.setText(_translate("MainWindow", "Aktualizuj bazę danych"))
 
 
-        self.action123.setText(_translate("MainWindow", "123"))
-        self.action123_2.setText(_translate("MainWindow", "123"))
+
+
+
 
 
 if __name__ == "__main__":
