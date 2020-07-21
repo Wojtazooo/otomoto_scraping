@@ -8,5 +8,6 @@ Otomomoto_web_wcrapping GUI
 - [x] wybór nazwy pliku do zapisania
 - [ ] wybór bazy danych z której chcemy korzystać
 - [ ] przeniesienie z proba6 do proba7
+- [ ] przeniesienie z loading 2 do loading 3
 - [x] zakończenie procesu pobierania
  
