@@ -1,13 +1,12 @@
 # otomoto_web_scrapping
-Otomomoto_web_wcrapping GUI 
 
-## Task List
-### 21/07/2020
-- [x] dynamiczny layout ekranu ładowania, przy rozciąganiu okna ładowania rozciąga się pasek informacji
-- [x] autoscrolling informacji o wyjściu 
-- [x] wybór nazwy pliku do zapisania
-- [ ] wybór bazy danych z której chcemy korzystać
-- [ ] przeniesienie z proba6 do proba7
-- [ ] przeniesienie z loading 2 do loading 3
-- [x] zakończenie procesu pobierania
+##### Program Otomoto scraping pozwala na pobranie danych z jednego z najpopularniejszych serwisów z aukcjami samochodowymi w Polsce otomoto.pl. 
+
+## Główne okno
+
+
+
+1. Wstęp- opis co robi program, jakie ma funckje, z czego korzysta, 
+2. Opis wyboru marki modelu i roku produkcji
+3. 
  
