@@ -22,6 +22,7 @@
    * pozwala nam na przeglądanie pojazdów tylko z danego rocznika
 1. **Lista aukcji**
    * Przedstawia podstawowe informacje o pojeździe
+   * Umożliwia sortowanie po dowolnym parametrze
    * po dwukrotnym naciśnięciu linku nastąpi otwarcie przeglądarki i przekierowanie na stronę z aukcją, w przypadku starszej bazy danych, aukcja może być już nieaktywna
 1. **Wykres**
    * Patrz niżej opis wykresu
