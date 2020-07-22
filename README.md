@@ -42,7 +42,7 @@
    
 ## Pobieranie nowej bazy danych
 
-### Przycik "Pobierz nową bazę danych" pozwala na pobranie wszytkich aktualnych aukcji z serwisu otomoto.pl, po otwarciu nowego okna należy nacisnąć przycisk "Rozpocznij" 
+### Przycik "Pobierz nową bazę danych" pozwala na pobranie wszytkich aktualnych aukcji z serwisu otomoto.pl, po otwarciu nowego okna należy nacisnąć przycisk "Rozpocznij", pozwoli nam to na wybranie nazwy dla naszej nowej bazy danych i miejsca zapisu
 
 ![GitHub Logo](/screenshots/scrappingWindow.png)
 
