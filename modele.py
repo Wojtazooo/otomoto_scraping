@@ -120,6 +120,7 @@ def Wykresik(database,marka,model, rok):
         plt.bar(x,y,width=700)
         plt.xlabel("Cena samochodu")
         plt.ylabel("liczba samochodow")
+        plt.title("Rozkład liczby pojazdów w podprzedziałach cenowych")
         return plt
 
 def Marki(database):
