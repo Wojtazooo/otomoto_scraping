@@ -307,6 +307,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Aktualizacja bazy danych"))
+        Form.setWindowIcon(QtGui.QIcon('db_icon.png'))
         self.label_2.setText(_translate("Form", "Pobieranie nowej bazy danych"))
         self.label.setText(_translate("Form", "Pozostało:"))
         self.label_3.setText(_translate("Form", ""))
