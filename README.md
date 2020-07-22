@@ -35,6 +35,7 @@
 1. Wybrana została marka lub marka i model pojazdu
    * Wykres górny przedstawia zależność średniej wartości pojazdu od rocznika produkcji
    * Wykres dolny przedstawia liczbę pojazdów które są brane do obliczenia średniej wartości
+   * ![GitHub Logo](/screenshots/Graph1.png)
 1. Dodatkowo została wybrana marka pojazdu 
    * Wykres dzieli przedział cen na podprzedziały i przedstawia ile pojazdów znajduje się w danym podprzedziale 
    
