@@ -21,7 +21,6 @@ class Ui_MainWindow(object):
         self.window.show()
 
     def button1clicked(self):
-        print("klinknieto")
         marka = self.wybor_marka.currentText()
         model = self.wybor_model.currentText()
         rok = self.wybor_rok_produkcji.currentText()
@@ -30,7 +29,6 @@ class Ui_MainWindow(object):
         plt.show()
 
     def funkcja(self):
-        print("otwórz stronę")
         wiersz = self.tabelka.currentRow()
         kolumna = self.tabelka.currentColumn()
         if (kolumna == 5):
@@ -38,7 +36,6 @@ class Ui_MainWindow(object):
             webbrowser.open(self.tabelka.item(wiersz, kolumna).text())
 
     def ustawienia_tabelki(self):
-        print("USTAWIENIA TABELKI")
         marka = self.wybor_marka.currentText()
         model = self.wybor_model.currentText()
         rok = self.wybor_rok_produkcji.currentText()
@@ -71,17 +68,17 @@ class Ui_MainWindow(object):
                 self.wybor_model.addItems(line.split(","))
 
     def change_database(self):
-        print("123")
         load_path = QtWidgets.QFileDialog.getOpenFileName()
         load_path = load_path[0]
-        print(load_path)
+
+
         self.database = str(load_path)
         self.lab_database_loadedi_info.setText(self.database)
         self.ustawienia_tabelki()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(642, 706)
+        MainWindow.resize(680, 673)
         MainWindow.setMouseTracking(True)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -90,17 +87,33 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label_database_text = QtWidgets.QLabel(self.centralwidget)
-        self.label_database_text.setMinimumSize(QtCore.QSize(140, 30))
-        self.label_database_text.setMaximumSize(QtCore.QSize(140, 30))
+        self.label_database_text.setMinimumSize(QtCore.QSize(160, 30))
+        self.label_database_text.setMaximumSize(QtCore.QSize(160, 30))
         self.label_database_text.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.label_database_text.setObjectName("label_database_text")
         self.horizontalLayout_2.addWidget(self.label_database_text)
         self.lab_database_loadedi_info = QtWidgets.QLabel(self.centralwidget)
         self.lab_database_loadedi_info.setText("")
         self.lab_database_loadedi_info.setObjectName("lab_database_loadedi_info")
+
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(11)
+        font.setWeight(50)
+        #font.setStrikeOut(False)
+        self.lab_database_loadedi_info.setFont(font)
+        self.label_database_text.setFont(font)
+
+
+
         self.horizontalLayout_2.addWidget(self.lab_database_loadedi_info)
         self.toolButton = QtWidgets.QToolButton(self.centralwidget)
         self.toolButton.setObjectName("toolButton")
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(11)
+        font.setWeight(50)
+        self.toolButton.setFont(font)
         self.horizontalLayout_2.addWidget(self.toolButton)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.widget_label_i_listy = QtWidgets.QWidget(self.centralwidget)
@@ -312,7 +325,7 @@ class Ui_MainWindow(object):
             self.wybor_rok_produkcji.addItem(str(rok))
 
         self.tabelka.setColumnCount(6)
-        self.tabelka.setRowCount(12)
+        self.tabelka.setRowCount(10)
 
         self.Button_wykres.clicked.connect(self.button1clicked)
         # self.wybor_marka.currentTextChanged(self.update_model_list)
@@ -331,7 +344,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Otomoto_web"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Otomoto scraping"))
+        MainWindow.setWindowIcon(QtGui.QIcon('car_icon.png'))
+        #MainWindow.setMinimumSize(680,590)
+
         self.label_database_text.setText(_translate("MainWindow", "Załadowana baza danych:"))
         self.toolButton.setText(_translate("MainWindow", "Zmień"))
         self.lab_marka.setText(_translate("MainWindow", "Marka"))
