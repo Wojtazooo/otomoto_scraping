@@ -30,7 +30,7 @@
    
 ## Wykresy 
 
-### Przycisk Wykres wyświetla wykresy w nowym oknie w zależności od wybranej Marki Modelu oraz Roku produkcji w  następujący sposób
+### Przycisk "Wykres" wyświetla wykresy w nowym oknie w zależności od wybranej Marki Modelu oraz Roku produkcji w  następujący sposób
  
 1. **Wybrana została marka lub marka i model pojazdu**
    * Wykres górny przedstawia zależność średniej wartości pojazdu od rocznika produkcji
@@ -40,6 +40,15 @@
    * Wykres dzieli przedział cen na podprzedziały i przedstawia ile pojazdów znajduje się w danym podprzedziale 
    * ![GitHub Logo](/screenshots/Graph2.png)
    
+## Pobieranie nowej bazy danych
+
+### Przycik "Pobierz nową bazę danych" pozwala na pobranie wszytkich aktualnych aukcji z serwisu otomoto.pl, po otwarciu nowego okna należy nacisnąć przycisk "Rozpocznij" 
+
+![GitHub Logo](/screenshots/scrappingWindow.png)
+
+
+
+
 
 
 
