@@ -4,7 +4,7 @@
 
 ## Główne okno
 
-![GitHub Logo](/screenshots/MainWindow.png)
+![GitHub Logo](/screenshots/MainWindow2.png)
 
 ### W głównym oknie programu możemy wybrać następujące parametry
 1. **Baza danych z której korzystamy**
