@@ -2,7 +2,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 import sys
 import os
-import modele
+import additional_functions
 import random
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -14,39 +14,40 @@ import pathlib
 
 class Ui_MainWindow(object):
     def open_loading_screen(self):
-        print("otwieram loading screen")
+        # setting loading database window
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_Form()
         self.ui.setupUi(self.window)
         self.window.show()
 
-    def button1clicked(self):
+    def Graph_button_clicked(self): # creating graph based on currently selected brand, model and year of production
         marka = self.wybor_marka.currentText()
         model = self.wybor_model.currentText()
         rok = self.wybor_rok_produkcji.currentText()
-        self.ustawienia_tabelki()
-        plt = modele.Wykresik(self.database, marka, model, rok)
+        self.table_settings()
+        plt = additional_functions.Wykresik(self.database, marka, model, rok)
         plt.show()
 
-    def funkcja(self):
+    def link_triggered(self): # specifing which link was triggered and then opening it
         wiersz = self.tabelka.currentRow()
         kolumna = self.tabelka.currentColumn()
+        # 5th column is where the links are stored
         if (kolumna == 5):
-            # print(self.tabelka.item(wiersz,kolumna).text())
             webbrowser.open(self.tabelka.item(wiersz, kolumna).text())
 
-    def ustawienia_tabelki(self):
+    def table_settings(self): # setting table window
+        # specifing which brand, model and year are selected
         marka = self.wybor_marka.currentText()
         model = self.wybor_model.currentText()
         rok = self.wybor_rok_produkcji.currentText()
-        dane = modele.dane_lista(self.database, marka, model, rok)
-
+        # taking data from database file of specific cars
+        dane = additional_functions.dane_lista(self.database, marka, model, rok)
+        # fitting table to data
         self.tabelka.setRowCount(len(dane))
-
+        # creating item to later put it inside the table
         item = QtWidgets.QTableWidgetItem()
         item.setData(PyQt5.QtCore.Qt.DisplayRole, 6)
-        print(type(item))
-
+        # inserting data to table
         for d in range(len(dane)):
             self.tabelka.setItem(d, 0, QtWidgets.QTableWidgetItem(dane[d][0]))
             self.tabelka.setItem(d, 1, QtWidgets.QTableWidgetItem(dane[d][1]))
@@ -56,27 +57,29 @@ class Ui_MainWindow(object):
             self.tabelka.setItem(d, 3, QtWidgets.QTableWidgetItem(str(dane[d][3])))
             self.tabelka.setItem(d, 4, QtWidgets.QTableWidgetItem(str(dane[d][4]) + " km"))
             self.tabelka.setItem(d, 5, QtWidgets.QTableWidgetItem(str(dane[d][7])))
-        self.tabelka.cellDoubleClicked.connect(self.funkcja)
+        # when cell with link to auction is double clicked it opens this one in web browser
+        self.tabelka.cellDoubleClicked.connect(self.link_triggered)
+        # turning on sorting
         self.tabelka.setSortingEnabled(True)
-        # self.tabelka.cellDoubleClicked.connect(self.funkcja)
 
-    def update_model_list(self):
+
+    def update_brand_list(self):
         self.wybor_model.clear()
+        # getting data about brands from marki.txt file
         f = open("marki.txt", "r")
         for i, line in enumerate(f):
             if (i == self.wybor_marka.currentIndex()-1):
                 self.wybor_model.addItems(line.split(","))
 
-    def change_database(self):
+    def change_database(self): # changing currently selected database
         load_path = QtWidgets.QFileDialog.getOpenFileName()
         load_path = load_path[0]
-
-
         self.database = str(load_path)
         self.lab_database_loadedi_info.setText(self.database)
-        self.ustawienia_tabelki()
+        self.table_settings()
 
     def setupUi(self, MainWindow):
+        # GUI object settings
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(680, 673)
         MainWindow.setMouseTracking(True)
@@ -95,17 +98,12 @@ class Ui_MainWindow(object):
         self.lab_database_loadedi_info = QtWidgets.QLabel(self.centralwidget)
         self.lab_database_loadedi_info.setText("")
         self.lab_database_loadedi_info.setObjectName("lab_database_loadedi_info")
-
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(11)
         font.setWeight(50)
-        #font.setStrikeOut(False)
         self.lab_database_loadedi_info.setFont(font)
         self.label_database_text.setFont(font)
-
-
-
         self.horizontalLayout_2.addWidget(self.lab_database_loadedi_info)
         self.toolButton = QtWidgets.QToolButton(self.centralwidget)
         self.toolButton.setObjectName("toolButton")
@@ -307,53 +305,48 @@ class Ui_MainWindow(object):
         self.action123.setObjectName("action123")
         self.action123_2 = QtWidgets.QAction(MainWindow)
         self.action123_2.setObjectName("action123_2")
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        # End of GUI objects settings
 
-
-        # ADDED
-        # wczytanie marek pojazdów
-        file = open("marki.txt", "r")
+        # getting brand names and putting them to select list
         f = open("marki.txt", "r")
         for i in f.readlines():
             self.wybor_marka.addItem(i.split(",")[0])
 
+        # adding blank default option to year select
         self.wybor_rok_produkcji.addItem("")
         for i in range(40):
             rok = 2020 - i
             self.wybor_rok_produkcji.addItem(str(rok))
 
+        # setting table size at runtime of gui
         self.tabelka.setColumnCount(6)
         self.tabelka.setRowCount(10)
 
-        self.Button_wykres.clicked.connect(self.button1clicked)
-        # self.wybor_marka.currentTextChanged(self.update_model_list)
-        self.wybor_marka.currentTextChanged.connect(self.update_model_list, self.wybor_marka.currentIndex())
-        self.wybor_model.currentTextChanged.connect(self.ustawienia_tabelki, self.wybor_model.currentIndex())
-        self.wybor_rok_produkcji.currentTextChanged.connect(self.ustawienia_tabelki,
+        # connecting buttons to their activity
+        self.Button_wykres.clicked.connect(self.Graph_button_clicked)
+        self.wybor_marka.currentTextChanged.connect(self.update_brand_list, self.wybor_marka.currentIndex())
+        self.wybor_model.currentTextChanged.connect(self.table_settings, self.wybor_model.currentIndex())
+        self.wybor_rok_produkcji.currentTextChanged.connect(self.table_settings,
                                                             self.wybor_rok_produkcji.currentIndex())
-        # connecting button when clicked to function open_loading_screen
         self.Button_loading.clicked.connect(self.open_loading_screen)
+        self.toolButton.clicked.connect(self.change_database)
 
-
+        # setting selected database to "example_database"
         self.database = "example_database.db"
         self.lab_database_loadedi_info.setText(self.database)
 
-        self.toolButton.clicked.connect(self.change_database)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Otomoto scraping"))
         MainWindow.setWindowIcon(QtGui.QIcon('car_icon.png'))
-        #MainWindow.setMinimumSize(680,590)
-
         self.label_database_text.setText(_translate("MainWindow", "Załadowana baza danych:"))
         self.toolButton.setText(_translate("MainWindow", "Zmień"))
         self.lab_marka.setText(_translate("MainWindow", "Marka"))
         self.lab_model.setText(_translate("MainWindow", "Model"))
         self.label_rokpr.setText(_translate("MainWindow", "rok produkcji"))
-
         self.label_Listaaukcji.setText(_translate("MainWindow", "Lista aukcji"))
         item = self.tabelka.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Marka"))
@@ -369,12 +362,6 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "link"))
         self.Button_wykres.setText(_translate("MainWindow", "Wykres"))
         self.Button_loading.setText(_translate("MainWindow", "Pobierz nową bazę danych"))
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
