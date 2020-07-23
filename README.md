@@ -1,6 +1,6 @@
 # otomoto_web_scrapping
 
-##### Program Otomoto scraping pozwala na pobranie danych z jednego z najpopularniejszych serwisów z aukcjami samochodowymi w Polsce otomoto.pl. 
+### Program Otomoto scraping pozwala na pobranie danych z jednego z najpopularniejszych serwisów z aukcjami samochodowymi w Polsce otomoto.pl. 
 
 ## Główne okno
 
@@ -43,10 +43,13 @@
    
 ## Pobieranie nowej bazy danych
 
-### Przycik "Pobierz nową bazę danych" pozwala na pobranie wszytkich aktualnych aukcji z serwisu otomoto.pl, po otwarciu nowego okna należy nacisnąć przycisk "Rozpocznij", pozwoli nam to na wybranie nazwy dla naszej nowej bazy danych i miejsca zapisu
+### Przycisk "Pobierz nową bazę danych" pozwala na pobranie wszytkich aktualnych aukcji z serwisu otomoto.pl, po otwarciu nowego okna należy nacisnąć przycisk "Rozpocznij", pozwoli nam to na wybranie nazwy dla naszej nowej bazy danych i miejsca zapisu
 
 ![GitHub Logo](/screenshots/scrappingWindow.png)
 
+* Program podaje czas, który pozostał do pobrania całej bazy danych, obliczany na podstawie proporcji aktualnego postępu i średniego czasu pobierania pojedyńczej aukcji
+* Długośc tego procesu zależy od prędkości sprzętu jednak niestety jest to dość długotrwały proces ze względu na to, że program musi odwiedzić około 7000 stron z aukcjami i to właśnie łączenie się do strony zajmuje najwięcej czasu. (w celu usprawnienia tego procesu planuję pobierać dane wielowątkowo jednak w obecnej wersji program pobiera dane przy pomocy jednego wątku)
+* Aukcje pobierane są w przedziałach cenowych ( <1, 500> <501, 1000> <1001, 1500> itd. ) z istotnego powodu, mianowicie program porusza się po kolejnych stronach z ogłoszeniami, w przypadku braku filtrowania aukcji dostępnych jest dla nas "tylko" 500 stron z pojazdami 34 aukcje na każdej stronie co daje jedynie 17000 aukcji. Nie są to wszystkie aukcje które są wystawione w tym serwisie. W celu pobrania wszystkich aukcji wyszukujemy pojazdy tylko z danego przedziału cenowego. Wielkość tego przedziału dobrana jest w ten sposób, że prawdopodobieństwo tego, że w danym przedziale będzie ponad 17000 dostępnych dla nas aukcji jest na tyle niskie, że w większości przypadków pozwala na pobranie wszystkich aukcji.
 
 
 
